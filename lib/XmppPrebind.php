@@ -134,7 +134,11 @@ class XmppPrebind {
 		$response = $this->sendInitialConnection($route);
 
 		$body = self::getBodyFromXml($response);
-		$this->sid = $body->getAttribute('sid');
+		if (is_object($body)) {
+			$this->sid = $body->getAttribute('sid');
+		} else {
+			throw new Exception('Invalid response');
+		}
 		$this->debug($this->sid, 'sid');
 
 		$mechanisms = $body->getElementsByTagName('mechanism');
