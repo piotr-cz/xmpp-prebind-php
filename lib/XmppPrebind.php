@@ -138,7 +138,11 @@ class XmppPrebind {
 		$this->debug($this->sid, 'sid');
 
 		$mechanisms = $body->getElementsByTagName('mechanism');
-		
+
+		if (!preg_match('/^<body/', $response)) {
+			throw new XmppPrebindConnectionException("Cannot connect to service");
+		}
+
 		foreach ($mechanisms as $value) {
 			$this->mechanisms[] = $value->nodeValue;
 		}
